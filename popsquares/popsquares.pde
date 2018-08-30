@@ -86,10 +86,13 @@ color c1 = RED, c2 = BLACK, c3 = BLUE;
 
 int subdivisions = 10;
 int color_matrix_size = subdivisions * subdivisions;
+int[] color_matrix = new int[color_matrix_size];
+
 int border_width = 2;
 int display_width = 720;
 int display_height = 720;
-// int N = subdivisions;
+int cell_width = display_width / subdivisions;
+int cell_height = display_height / subdivisions;
 
 void setup() {
   size(720, 720, P3D);
@@ -99,31 +102,37 @@ void setup() {
   rectMode(CORNER);
   fill(32);
   noStroke();
-  int[] color_matrix = new int[color_matrix_size];
-  for (int i=0; i < matrix_size; i++) {
-    color_matrix[i] = random(255);
+  for (int i=0; i < color_matrix_size; i++) {
+    color_matrix[i] = int(random(127));
   }
 }
-
-
 
 void draw_() {
   background(BG); 
   tt = 1-sq(1-t);
 
-  //fill(127);
-  //rect(10, 10, 20, 20);
-
   //push();
-  for(int i=0; i < subdivisions; i++){
-    println("i == " + i);
-    // easing = lerp(12,2,sqrt(i/float(N)));
-    // l = map(i,0,N,maxL,0);
-    fill(i%2 == 0 ? 32 : 250);
-    //push();
-    rect(c,c,l * t,l * t);
-    translate(40, 40);
-    //pop();
+  for(int matrix_y=0; matrix_y < subdivisions; matrix_y++){
+    for(int matrix_x=0; matrix_x < subdivisions; matrix_x++){
+      int cell_id = ( matrix_y * subdivisions ) + matrix_x;
+      int cell_color = color_matrix[cell_id]--;
+      if (cell_color <= 0) {
+        color_matrix[cell_id] = int(random(127));
+      }
+
+      if (mousePressed) {
+        println(
+          "cell_id == " + cell_id + ", " + 
+          "cell_color == " + cell_color + ", " + 
+          "matrix_y == " + matrix_y + ", " + 
+          "matrix_x == " + matrix_x
+        );
+      }
+      fill(cell_color);
+      //push();
+      rect(matrix_x * cell_width, matrix_y * cell_height, cell_width, cell_height);
+      //pop();
+    }
   }
   //pop();
 }
