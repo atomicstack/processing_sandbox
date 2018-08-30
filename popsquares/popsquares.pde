@@ -95,7 +95,7 @@ int cell_width = display_width / subdivisions;
 int cell_height = display_height / subdivisions;
 
 void setup() {
-  size(720, 720, P3D);
+  size(720, 720, P2D);
   pixelDensity(recording ? 1 : 2);
   smooth(8);
   result = new int[width*height][3];
