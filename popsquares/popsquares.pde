@@ -117,7 +117,8 @@ void draw_() {
       int cell_id = ( matrix_y * subdivisions ) + matrix_x;
       int cell_color = color_matrix[cell_id]--;
       if (cell_color <= 0) {
-        color_matrix[cell_id] = int(random(127));
+        color_matrix[cell_id] = int(random(4)) % 4 == 0 ? int(random(127)) : 127;
+        //color_matrix[cell_id] = 127;
       }
 
       if (mousePressed) {
