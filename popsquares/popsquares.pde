@@ -41,6 +41,7 @@ void draw() {
       println(c);
     draw_();
   } else {
+    if (use_motion_blur) {
     for (int i=0; i<width*height; i++)
       for (int a=0; a<3; a++)
         result[i][a] = 0;
@@ -64,6 +65,10 @@ void draw() {
         int(result[i][1]*1.0/samplesPerFrame) << 8 | 
         int(result[i][2]*1.0/samplesPerFrame);
     updatePixels();
+    }
+    else {
+      draw_();
+    }
 
     saveFrame("f###.gif");
     if (frameCount==numFrames)
@@ -76,7 +81,8 @@ void draw() {
 int samplesPerFrame = 4;
 int numFrames = 480;        
 float shutterAngle = .6;
-boolean recording = false;
+boolean recording = true;
+boolean use_motion_blur = false;
 
 float x, y, z, tt;
 float l = 75;
@@ -89,15 +95,15 @@ int color_matrix_size = subdivisions * subdivisions;
 int[] color_matrix = new int[color_matrix_size];
 
 int border_width = 2;
-int display_width = 720;
-int display_height = 720;
-int cell_width = display_width / subdivisions;
-int cell_height = display_height / subdivisions;
+int cell_width;
+int cell_height;
 
 void setup() {
-  size(720, 720, P2D);
+  size(240, 240, P2D);
   pixelDensity(recording ? 1 : 2);
   smooth(8);
+  cell_width = width / subdivisions;
+  cell_height = height / subdivisions;
   result = new int[width*height][3];
   rectMode(CORNER);
   fill(32);
